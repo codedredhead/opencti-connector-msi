@@ -1,0 +1,22 @@
+# OS X
+.history
+.DS_Store
+
+# IntelliJ
+.idea_modules
+*.iml
+*.iws
+*.ipr
+.idea/
+build/
+*/build/
+out/
+
+# Node JS
+node_modules
+
+# Environment variables
+.env
+
+# Python
+__pycache__/

@@ -1,0 +1,57 @@
+name: 'Continuous Deployment'
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+  workflow_dispatch:
+    inputs:
+      image-tag:
+        description: 'Tag to use when building the Docker image'
+        required: true
+jobs:
+
+  cd:
+    name: Release
+    if: github.event_name == 'push'
+    uses: cncsc/actions/.github/workflows/semantic-release.yaml@main
+    secrets:
+      GIT_TOKEN_BASIC: ${{ secrets.GIT_TOKEN_BASIC }}
+
+  build-image:
+    name: Build Docker image
+    needs: cd
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: opencti-connector-msi:${{ needs.cd.outputs.semver }}
+
+  manual-build-image:
+    name: Build Docker image (manual)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: opencti-connector-msi:${{ inputs.image-tag }}

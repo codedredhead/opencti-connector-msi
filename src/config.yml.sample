@@ -1,0 +1,249 @@
+# * NOTE - ONLY 1 msi source will be there at a time
+# Sources configuration
+#
+# score: Optional confidence/severity score (0-100, default: 50)
+#        Applied to all STIX objects created by the connector
+# confidence: Optional indicator confidence level (0-100, default: 50)
+#             Applied only to STIX indicator objects
+
+## IP
+# msi:
+#   name: "cta_cryptowall"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: ip
+#   # Rapid refresh for testing
+#   duration_period: "PT2H"
+#   client_type: "raw_text"
+#   tlp_level: "green"
+#   labels: "malicious-activity,ransomware"
+#   url: "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/cta_cryptowall.ipset"
+#   auth_type: "none"
+#   entity_types: "indicator,ipv4-addr"
+#   relationships: "based-on:indicator:ipv4-addr"
+#   external_ref_name: "FireHOL CryptoWall Ransomware IP BLocklist"
+#   external_ref_url: "https://github.com/firehol/blocklist-ipsets"
+#   ignore_regex: "^#.*"
+#   capture_zone: "^([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})\\s*$"
+#   capture_regex: "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b"
+#   capture_groups: "ip:1"
+
+# msi:
+#   name: "exit-addresses"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: ip
+#   # Rapid refresh for testing
+#   duration_period: "PT1H"
+#   client_type: "raw_text"
+#   # Not a TLP-AMBER source - Amber applied for testing
+#   tlp_level: "amber"
+#   labels: "tor-exit-node,anonymization-infrastructure"
+#   score: 60
+#   url: "https://check.torproject.org/exit-addresses"
+#   auth_type: "none"
+#   entity_types: "indicator,infrastructure,ipv4-addr"
+#   relationships: "based-on:indicator:ipv4-addr,consists-of:infrastructure:ipv4-addr"
+#   external_ref_name: "Tor Project"
+#   external_ref_url: "https://www.torproject.org/"
+#   external_ref_description: "The Tor Project official exit node list"
+#   ignore_regex: "^(ExitNode|Published|LastStatus).*"
+#   capture_zone: "ExitAddress\\s+([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})\\s+(\\d{4}-\\d{2}-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2})"
+#   capture_regex: "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b"
+#   capture_groups: "ip:1,timestamp:2"
+
+# msi:
+#   name: "cybercrime"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: ip
+#   # Rapid refresh for testing
+#   duration_period: "PT3H"
+#   client_type: "html"
+#   tlp_level: "amber"
+#   labels: "malicious-activity,cybercrime"
+#   url: "http://cybercrime-tracker.net/fuckerz.php"
+#   auth_type: "none"
+#   entity_types: "indicator,ipv4-addr"
+#   relationships: "based-on:indicator:ipv4-addr"
+#   external_ref_name: "CyberCrime Tracker"
+#   external_ref_url: "http://cybercrime-tracker.net/"
+#   external_ref_description: "CyberCrime Tracker IP addresses from malicious activities"
+#   capture_zone: "\\b([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})\\b"
+#   capture_regex: "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b"
+#   capture_groups: "ip:1"
+
+## URL
+# msi:
+#   name: "phishtank"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: "url"
+#   duration_period: "PT6H"
+#   client_type: "raw_text"
+#   tlp_level: "clear"
+#   labels: "malicious-activity,phishing"
+#   url: "https://phishtank.org/phish_archive.php"
+#   auth_type: "none"
+#   entity_types: "indicator,url"
+#   relationships: "based-on:indicator:url"
+#   external_ref_name: "Phish Tank"
+#   external_ref_url: "https://phishtank.org/"
+#   external_ref_description: "PhishTank is a collaborative clearing house for data and information about phishing on the Internet."
+#   # Extract phishing URLs from anchor tag text, excluding PhishTank's own domain
+#   capture_regex: "^https?://(?!(?:www\\.)?phishtank\\.org)[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:/[^\\s\"'<>]*)?$"
+
+# msi:
+#   name: "botvrij_ioclist_url"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: "url"
+#   client_type: "raw_text"
+#   tlp_level: "clear"
+#   labels: "malicious-activity, spam"
+#   url: "https://botvrij.eu/data/ioclist.url"
+#   entity_types: "indicator, url"
+#   relationships: "based-on,indicator,url"
+#   external_ref_name: "Botvrij"
+#   external_ref_url: "https://www.botvrij.eu/"
+#   external_ref_description: "Botvrij.eu provides open source IOCs to detect malicious activity."
+#   capture_zone: "(https?:\/\/[^\\s#]+|[a-zA-Z0-9][\\w.-]*\\.[a-zA-Z]{2,}(?:\/[^\\s#]*)?)\\s*(?=#|$)"
+#   capture_regex: "(https?:\/\/[^\\s#]+|[a-zA-Z0-9][\\w.-]*\\.[a-zA-Z]{2,}(?:\/[^\\s#]*)?)\\s*(?=#|$)"
+
+## EMAIL
+# msi:
+#   name: "ramblings"
+#   enabled: yes
+#   creator: analyst
+#   score: 80
+#   confidence: 70
+#   source_type: "email"
+#   duration_period: "PT24H"
+#   client_type: "raw_text"
+#   tlp_level: "amber"
+#   labels: "malicious-activity,phishing,spammers"
+#   url: "http://www.ram.org/ramblings/philosophy/spam/spammers.html"
+#   auth_type: "none"
+#   entity_types: "indicator,email-addr"
+#   relationships: "based-on:indicator:email-addr"
+#   external_ref_name: "Ramblings"
+#   external_ref_url: "http://www.ram.org/"
+#   external_ref_description: "Ram email addresses from spammer activities"
+#   capture_zone: "([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})"
+#   capture_regex: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+#   capture_groups: "email:1"
+
+## DOMAIN
+#msi:
+#  name: "botvrij_ioclist_domain"
+#  enabled: yes
+#  creator: analyst
+#  score: 80
+#  confidence: 70
+#  source_type: "domain"
+#  duration_period: "PT24H"
+#  client_type: "raw_text"
+#  tlp_level: "amber"
+#  labels: "malicious-activity,phishing"
+#  url: "https://botvrij.eu/data/ioclist.domain"
+#  auth_type: "none"
+#  entity_types: "indicator,domain-name"
+#  relationships: "based-on:indicator:domain-name"
+#  external_ref_name: "Botvrij"
+#  external_ref_url: "https://www.botvrij.eu/"
+#  external_ref_description: "Botvrij.eu provides open source IOCs to detect malicious activity."
+#  capture_zone: "(([a-zA-Z0-9._%+-]+\\.[a-zA-Z]{2,}))"
+#  capture_regex: "([a-zA-Z0-9._%+-]+\\.[a-zA-Z]{2,})"
+
+## FILE
+## MD5
+# msi:
+#   name: "botvrij_ioclist_md5"
+#   creator: "analyst"
+#   score: 80
+#   confidence: 70
+#   enabled: yes
+#   source_type: "md5"
+#   client_type: "raw_text"
+#   tlp_level: "clear"
+#   labels: "malicious-activity, malware"
+#   url: "https://botvrij.eu/data/ioclist.md5"
+#   entity_types: "indicator, file"
+#   relationships: "based-on,indicator,file"
+#   external_ref_name: "Botvrij"
+#   external_ref_url: "https://www.botvrij.eu/"
+#   external_ref_description: "Botvrij.eu provides open source IOCs to detect malicious activity."
+#   capture_zone: "(?i)(((?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])))"
+#   capture_regex: "(?i)(?<![0-9a-f])[0-9a-f]{32}(?![0-9a-f])"
+
+## SHA1
+# msi:
+#   name: "botvrij_ioclist_sha1"
+#   creator: "analyst"
+#   score: 80
+#   confidence: 70
+#   enabled: yes
+#   source_type: "sha1"
+#   client_type: "raw_text"
+#   tlp_level: "clear"
+#   labels: "malicious-activity, malware"
+#   url: "https://botvrij.eu/data/ioclist.sha1"
+#   entity_types: "indicator, file"
+#   relationships: "based-on,indicator,file"
+#   external_ref_name: "Botvrij"
+#   external_ref_url: "https://www.botvrij.eu/"
+#   external_ref_description: "Botvrij.eu provides open source IOCs to detect malicious activity."
+#   capture_zone: "^[a-fA-F0-9]{40}"
+#   capture_regex: "^[a-fA-F0-9]{40}"
+
+## SHA256
+# msi:
+#   name: "botvrij_ioclist_sha256"
+#   creator: "analyst"
+#   score: 80
+#   confidence: 70
+#   enabled: yes
+#   source_type: "sha256"
+#   client_type: "raw_text"
+#   tlp_level: "clear"
+#   labels: "malicious-activity, malware"
+#   url: "https://botvrij.eu/data/ioclist.sha256"
+#   entity_types: "indicator, file"
+#   relationships: "based-on,indicator,file"
+#   external_ref_name: "Botvrij"
+#   external_ref_url: "https://www.botvrij.eu/"
+#   external_ref_description: "Botvrij.eu provides open source IOCs to detect malicious activity."
+#   capture_zone: "^[a-fA-F0-9]{64}"
+#   capture_regex: "^[a-fA-F0-9]{64}"
+
+#msi:
+#  name: "phishtank"
+#  creator: analyst
+#  score: 80
+#  confidence: 70
+#  enabled: yes
+#  source_type: "domain"
+#  duration_period: "PT24H"
+#  client_type: "html"
+#  # Not a TLP-AMBER source - Amber applied for testing
+#  tlp_level: "amber"
+#  labels: "malicious-activity,phishing"
+#  url: "https://phishtank.org/phish_search.php"
+#  auth_type: "none"
+#  entity_types: "indicator,domain-name"
+#  relationships: "based-on:indicator:domain-name"
+#  external_ref_name: "phishtank"
+#  external_ref_url: "https://phishtank.org"
+#  external_ref_description: "phishtank provides open source IOCs to detect malicious activity."
+#  capture_zone: 'https?:\/\/(?:www\.)?([^\/\s"<]+)'
+#  capture_regex: 'https?:\/\/(?:www\.)?([^\/\s"<]+)'
